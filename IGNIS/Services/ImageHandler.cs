@@ -35,7 +35,7 @@ public class ImageHandler
         }
     }
     
-    internal void Resize(int finWidth = 1500)
+    internal void Resize(int finWidth = 1080)
     {
         // Resize to intended width while maintaining original aspect ratio
         int finHeight = (int)(_image.Height * (finWidth / (float)_image.Width));
