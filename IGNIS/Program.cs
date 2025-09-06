@@ -21,7 +21,7 @@ app.MapPost("/processStatsImage", async (IFormFile file) =>
     
     List<Image> processableSnippets = imageHandler.SplitIntoProcessableChunks();
     
-    //TODO: Resize image to 1500x--- maintaining ratio
+    //TODO: Resize image to 1500x--- maintaining ratio.
 });
 
 var sampleTodos = TodoGenerator.GenerateTodos().ToArray();
