@@ -1,0 +1,7 @@
+﻿services:
+  ignis:
+    image: ignis
+    build:
+      context: .
+      dockerfile: Dockerfile
+

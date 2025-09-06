@@ -1,0 +1,73 @@
+using IGNIS.Models;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+namespace IGNIS;
+
+public class ImageHandler
+{
+    private readonly Image _image;
+
+    public ImageHandler(IFormFile imageFile)
+    {
+        _image = LoadImage(imageFile);
+    }
+    
+    internal Image LoadImage(IFormFile imageFile)
+    {
+        try
+        {
+            return Image.Load(imageFile.OpenReadStream());
+        }
+        catch (InvalidImageContentException e1)
+        {
+            throw new ImageHandlerException("The file content is not a valid image.", e1);
+        }
+        catch (UnknownImageFormatException e2)
+        {
+            throw new ImageHandlerException("The file format is invalid.", e2);
+        }
+        catch (Exception ex)
+        {
+            throw new ImageHandlerException("An unknown error occurred while loading the image file.", ex);
+        }
+    }
+    
+    internal void Resize()
+    {
+        //TODO: Resize accordingly to 1500x--- while maintaining aspect ratio
+        int finWidth = 1500;
+        int finHeight = (int)(_image.Height * (finWidth / (float)_image.Width));
+
+        try
+        {
+            _image.Mutate(s => s.Resize(finWidth, finHeight));
+        }
+        catch (ObjectDisposedException e1)
+        {
+            throw new ImageHandlerException("Image object was disposed of before resizing could be performed.", e1);
+        }
+        catch (ImageProcessingException e2)
+        {
+            throw new ImageHandlerException("Image resizing failed.", e2);
+        }
+        catch (Exception ex)
+        {
+            throw new ImageHandlerException("An unknown error occurred while resizing the image.", ex);
+        }
+    }
+    
+    internal List<Image> SplitPerPlayer ()
+    {
+        Resize();
+        
+        
+        //TODO: Split image into the expected chunks
+    }
+
+}
+
+public class ImageHandlerException : Exception
+{
+    public ImageHandlerException(string message, Exception inner) : base(message, inner) { }
+}
