@@ -12,6 +12,11 @@ public class ImageHandler
     {
         _image = LoadImage(imageFile);
     }
+
+    public List<PlayerStats> GetStatsFromImage()
+    {
+        
+    }
     
     internal Image LoadImage(IFormFile imageFile)
     {

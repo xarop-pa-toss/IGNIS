@@ -1,6 +1,6 @@
 namespace IGNIS.Models;
 
-public class Stats
+public class PlayerStats
 {
     public string PlayerName { get; set; }
     public int Kills { get; set; }

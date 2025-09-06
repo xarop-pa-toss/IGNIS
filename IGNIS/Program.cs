@@ -16,7 +16,7 @@ app.MapPost("/processStatsImage", async (IFormFile file) =>
     }
     
     var imageHandler = new ImageHandler(file);
-    imageHandler.PrepareImage();
+    var StatsList = imageHandler.GetStatsFromImage();
     
     
     List<Image> processableSnippets = imageHandler.SplitIntoProcessableChunks();
