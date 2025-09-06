@@ -1,13 +1,13 @@
 using SixLabors.ImageSharp;
 namespace IGNIS;
 
-public class StatsExtractor
+public static class StatsExtractor
 {
-    private int _panelWidth;
+    private` int _panelWidth;
     private int _panelHeight;
-    private Dictionary<string, Rectangle> base
+    private Dictionary<string, Rectangle> _playerNameCropAreas;
 
-    public StatsExtractor(Image fullImage)
+    public static StatsExtractor(Image fullImage)
     {
         _panelHeight = fullImage.Height;
     }

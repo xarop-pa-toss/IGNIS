@@ -12,11 +12,8 @@ public class ImageHandler
     {
         _image = LoadImage(imageStream);
     }
-
+    
     var playerStats = new StatsExtractor(_image);
-    {
-        
-    }
     
     internal Image LoadImage(Stream imageStream)
     {
@@ -60,7 +57,23 @@ public class ImageHandler
             throw new ImageHandlerException("An unknown error occurred while resizing the image.", ex);
         }
     }
-    
+
+    internal void PrepareForProcessing()
+    {
+        _image.Mutate(s =>
+        {
+            s.Grayscale();
+            s.GaussianBlur(0.5f);
+            s.BinaryThreshold(0.5f);
+            s.Contrast(1.1f);
+            s.Resize(_image.Width * 2, _image.Height * 2);
+        });
+    }
+
+    internal int GetPlayerCount()
+    {
+        return StatsExtractor.GetPlayerCount(_image);
+    }
     internal List<Image> SplitPerPlayer ()
     {
         Resize();
