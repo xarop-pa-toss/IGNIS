@@ -3,7 +3,7 @@ using SixLabors.ImageSharp;
 using EnvironmentName = Microsoft.AspNetCore.Hosting.EnvironmentName;
 namespace IGNIS.Models;
 
-public static class StatsRectangles
+public static class StatsAreas
 {
     public readonly static Dictionary<string, Rectangle> PanelAreas = new()
     {
