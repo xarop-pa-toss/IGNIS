@@ -8,21 +8,21 @@ public class ImageHandler
 {
     private readonly Image _image;
 
-    public ImageHandler(IFormFile imageFile)
+    public ImageHandler(Stream imageStream)
     {
-        _image = LoadImage(imageFile);
+        _image = LoadImage(imageStream);
     }
 
-    public List<PlayerStats> GetStatsFromImage()
+    var playerStats = new StatsExtractor(_image);
     {
         
     }
     
-    internal Image LoadImage(IFormFile imageFile)
+    internal Image LoadImage(Stream imageStream)
     {
         try
         {
-            return Image.Load(imageFile.OpenReadStream());
+            return Image.Load(imageStream);
         }
         catch (InvalidImageContentException e1)
         {
@@ -38,10 +38,9 @@ public class ImageHandler
         }
     }
     
-    internal void Resize()
+    internal void Resize(int finWidth = 1500)
     {
-        //TODO: Resize accordingly to 1500x--- while maintaining aspect ratio
-        int finWidth = 1500;
+        // Resize to intended width while maintaining original aspect ratio
         int finHeight = (int)(_image.Height * (finWidth / (float)_image.Width));
 
         try
@@ -65,6 +64,8 @@ public class ImageHandler
     internal List<Image> SplitPerPlayer ()
     {
         Resize();
+        
+        
         
         
         //TODO: Split image into the expected chunks

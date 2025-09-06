@@ -14,9 +14,10 @@ app.MapPost("/processStatsImage", async (IFormFile file) =>
     {
         return Results.BadRequest("Expected an image file of format .png, .jpg/jpeg or .bmp");
     }
-    
-    var imageHandler = new ImageHandler(file);
-    var StatsList = imageHandler.GetStatsFromImage();
+
+    using var fileStream = file.OpenReadStream(); 
+    var imageHandler = new ImageHandler(fileStream);
+    var statsList = imageHandler.GetStatsFromImage();
     
     
     List<Image> processableSnippets = imageHandler.SplitIntoProcessableChunks();
