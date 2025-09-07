@@ -1,4 +1,5 @@
 using IGNIS;
+using IGNIS.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,11 +17,10 @@ app.MapPost("/processStatsImage", async (IFormFile file) =>
     }
 
     using var fileStream = file.OpenReadStream(); 
-    var imageHandler = new ImageHandler(fileStream);
-    var statsList = imageHandler.GetStatsFromImage();
+    var originalImage = ImageProcessor.LoadAndPrepare(fileStream);
     
-    
-    List<Image> processableSnippets = imageHandler.SplitIntoProcessableChunks();
+    var 
+        
     
     //TODO: Resize image to 1500x--- maintaining ratio.
 });

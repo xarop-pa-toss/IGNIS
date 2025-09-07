@@ -1,15 +1,26 @@
+using IGNIS.Models;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 namespace IGNIS;
 
-public static class StatsExtractor
+public class StatsExtractor
 {
-    private int _panelWidth;
-    private int _panelHeight;
-    private Dictionary<string, Rectangle> _playerNameCropAreas;
+    private Image _image;
 
-    public static StatsExtractor(Image fullImage)
+    public StatsExtractor(Image image)
     {
-        _panelHeight = fullImage.Height;
+        _image = image;
     }
-    private int GetPlayerAmount()
+
+    public List<string> ExtractPlayerNames()
+    {
+        var ocrService = new OcrService();
+        
+    }
+    
+    public async Task<List<Stats>> ProcessStatImages(List<StatsImages> x)
+    {
+        
+    }
 }
+    
