@@ -3,25 +3,27 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace IGNIS;
 
-public class OcrService
+public static class OcrService
 {
-    private readonly string _tessDataPath = Path.Combine("Assets");
+    private static readonly string TessDataPath = Path.Combine("Assets");
+    
 
-    public string ExtractText(Image image)
+    public static string ExtractDigitsFromImage(TesseractEngine tesseract, Image image)
     {
-        // Tesseract wants to use System.Drawing.Bitmap so the ImageSharp image needs conversion
         using var memStream = new MemoryStream();
-        image.SaveAsBmp(memStream);
+        image.SaveAsPng(memStream);
         memStream.Position = 0;
 
-        using var bitmap = new System.Drawing.Bitmap(memStream);
-        using var engine = new TesseractEngine(_tessDataPath, "eng", EngineMode.Default);
-        using var page = engine.Process(bitmap);
+        using var pix = Pix.LoadFromMemory(memStream.ToArray());
+        using var page = tesseract.Process(pix);
 
-        return page.GetText();
+        var textResult = page.GetText();
+        var onlyDigits = Regex.Replace(textResult, @"\D", "");
+        
+        return onlyDigits?.Trim() ?? string.Empty;
     }
-    
 }

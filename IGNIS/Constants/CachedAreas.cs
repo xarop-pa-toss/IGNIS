@@ -12,18 +12,18 @@ public static class CachedAreas
     private static Rectangle Player1NameRectangle = new Rectangle(100, 160, 260, 16);
     private static Rectangle Player1StatsPanelRectangle = new Rectangle(260, 260, 82, 452);
 
-    public static Dictionary<int, StatsRectangles> AllPlayersStatsRectangles;
+    public static Dictionary<int, PanelRectangles> AllPlayersStatsRectangles;
     
     static CachedAreas()
     {
-        AllPlayersStatsRectangles = new Dictionary<int, StatsRectangles>();
+        AllPlayersStatsRectangles = new Dictionary<int, PanelRectangles>();
 
         for (int playerNum = 1; playerNum <= 4; playerNum++)
         {
             var nameRect = PlayerNamePanelRectangles[playerNum];
             var statRects = PlayerStatsSplitRectangles[playerNum];
 
-            var stats = new StatsRectangles
+            var stats = new PanelRectangles
             {
                 PlayerName = nameRect,
                 Kills = statRects[0],
@@ -54,7 +54,8 @@ public static class CachedAreas
         return new Rectangle(Player1NameRectangle.X + (360 * playerNum), 260, 82, 452);
     }
 
-    public readonly static Dictionary<int, Rectangle> PlayerNamePanelRectangles = new()
+    // Player Name
+    private readonly static Dictionary<int, Rectangle> PlayerNamePanelRectangles = new()
     {
         {
             1, Player1NameRectangle
@@ -70,7 +71,8 @@ public static class CachedAreas
         }
     };
 
-    public readonly static Dictionary<int, List<Rectangle>> PlayerStatsSplitRectangles = new()
+    // Stats
+    private readonly static Dictionary<int, List<Rectangle>> PlayerStatsSplitRectangles = new()
     {
         {
             1, SplitStatsPanel(Player1StatsPanelRectangle)

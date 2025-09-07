@@ -3,7 +3,7 @@ using SixLabors.ImageSharp;
 using EnvironmentName = Microsoft.AspNetCore.Hosting.EnvironmentName;
 namespace IGNIS.Models;
 
-public class StatsRectangles
+public class PanelRectangles
 {
     public Rectangle PlayerName { get; set; }
     public Rectangle Kills { get; set; }

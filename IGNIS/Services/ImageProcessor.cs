@@ -75,38 +75,35 @@ public static class ImageProcessor
             throw new ImageHandlerException("An unknown error occurred while cropping the image.", e1);
         }
     }
-
-    public static List<Image> GetPlayerNameImages(Image image)
+    
+    public static Dictionary<int, Image> GetPlayerNameImagesDict(Image image)
     {
-        return new List<Image>()
+        return new Dictionary<int, Image>()
         {
-            image.Clone(img => img.Crop(CachedAreas.PlayerNamePanelRectangles[1])),
-            image.Clone(img => img.Crop(CachedAreas.PlayerNamePanelRectangles[2])),
-            image.Clone(img => img.Crop(CachedAreas.PlayerNamePanelRectangles[3])),
-            image.Clone(img => img.Crop(CachedAreas.PlayerNamePanelRectangles[4]))    
+            {1, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[1].PlayerName) },
+            {2, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[2].PlayerName) },
+            {3, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[3].PlayerName) },
+            {4, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[4].PlayerName) }
         };
     }
     
-    public static StatsImages GetStatsImagesFromStatsRectangles(Image image, int playerInd, List<StatsRectangles> statsRectangles)
+    public static void GetStatsImagesFromPanelImage(Image image, PanelImages panelImage, int playerNum)
     {
+        var panelRectangles = CachedAreas.AllPlayersStatsRectangles[playerNum];
         try
         {
-            var statsImages = new StatsImages();
-            statsImages.PlayerName = image.Clone(img => img.Crop(statsRectangles[playerInd].PlayerName));
-            statsImages.Kills = image.Clone(img => img.Crop(statsRectangles[playerInd].Kills));
-            statsImages.Accuracy = image.Clone(img => img.Crop(statsRectangles[playerInd].Accuracy));
-            statsImages.ShotsFired = image.Clone(img => img.Crop(statsRectangles[playerInd].ShotsFired));
-            statsImages.ShotsHit = image.Clone(img => img.Crop(statsRectangles[playerInd].ShotsHit));
-            statsImages.Deaths = image.Clone(img => img.Crop(statsRectangles[playerInd].Deaths));
-            statsImages.StimsUsed = image.Clone(img => img.Crop(statsRectangles[playerInd].StimsUsed));
-            statsImages.Accidentals = image.Clone(img => img.Crop(statsRectangles[playerInd].Accidentals));
-            statsImages.SamplesExtracted = image.Clone(img => img.Crop(statsRectangles[playerInd].SamplesExtracted));
-            statsImages.StratagemsUsed = image.Clone(img => img.Crop(statsRectangles[playerInd].StratagemsUsed));
-            statsImages.MeleeKills = image.Clone(img => img.Crop(statsRectangles[playerInd].MeleeKills));
-            statsImages.TimesReinforcing = image.Clone(img => img.Crop(statsRectangles[playerInd].TimesReinforcing));
-            statsImages.FriendlyFireDamage = image.Clone(img => img.Crop(statsRectangles[playerInd].FriendlyFireDamage));
-            
-            return statsImages; 
+            panelImage.Kills = GetImageFromRectangle(image, panelRectangles.Kills);
+            panelImage.Accuracy = GetImageFromRectangle(image, panelRectangles.Accuracy);
+            panelImage.ShotsFired = GetImageFromRectangle(image, panelRectangles.ShotsFired);
+            panelImage.ShotsHit = GetImageFromRectangle(image, panelRectangles.ShotsHit);
+            panelImage.Deaths = GetImageFromRectangle(image, panelRectangles.Deaths);
+            panelImage.StimsUsed = GetImageFromRectangle(image, panelRectangles.StimsUsed);
+            panelImage.Accidentals = GetImageFromRectangle(image, panelRectangles.Accidentals);
+            panelImage.SamplesExtracted = GetImageFromRectangle(image, panelRectangles.SamplesExtracted);
+            panelImage.StratagemsUsed = GetImageFromRectangle(image, panelRectangles.StratagemsUsed);
+            panelImage.MeleeKills = GetImageFromRectangle(image, panelRectangles.MeleeKills);
+            panelImage.TimesReinforcing = GetImageFromRectangle(image, panelRectangles.TimesReinforcing);
+            panelImage.FriendlyFireDamage = GetImageFromRectangle(image, panelRectangles.FriendlyFireDamage);
          }
         catch (ImageProcessingException e1)
         {
@@ -114,7 +111,5 @@ public static class ImageProcessor
         }
     }
 }
-
-
 
 public class ImageHandlerException(string message, Exception inner) : Exception(message, inner);

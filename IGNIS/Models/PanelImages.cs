@@ -1,7 +1,7 @@
 using SixLabors.ImageSharp;
 namespace IGNIS.Models;
 
-public class StatsImages
+public class PanelImages
 {
     public Image? PlayerName { get; set; }
     public Image? Kills { get; set; }
