@@ -5,17 +5,18 @@ namespace IGNIS.Constants;
 public static class CachedAreas
 {
     //TODO: Cache rectangles for 16:10 and 16:9
-    
+
     // USING THE CACHED AREAS
     // List<Image> playerStatsAreas = CachedPlayerAreas.PlayerStatsRectangles
     //     .Select(r => ImageProcessor.GetImageFromRectangle(_image, r.Value))
     //     .ToList();
 
-    private static Rectangle Player1NameRectangle = new Rectangle(100, 160, 260, 16);
-    private static Rectangle Player1StatsPanelRectangle = new Rectangle(260, 260, 82, 452);
+    private static Rectangle Player1NameRectangle = new Rectangle(200, 320 , 520, 32 );
+
+    private static Rectangle Player1StatsPanelRectangle = new Rectangle(520, 520, 164, 898);
 
     public readonly static Dictionary<int, PanelRectangles> AllPlayersStatsRectangles;
-    
+
     static CachedAreas()
     {
         AllPlayersStatsRectangles = new Dictionary<int, PanelRectangles>();
@@ -45,15 +46,15 @@ public static class CachedAreas
             AllPlayersStatsRectangles[playerNum] = stats;
         }
     }
-    
+
     private static Rectangle CreateNameRectangle(int playerNum)
     {
-        return new Rectangle(Player1NameRectangle.X + (360 * playerNum), 160, 260, 16);
+        return new Rectangle(Player1NameRectangle.X + (720 * playerNum), 320, 520, 32 );
     }
 
     private static Rectangle CreateStatsPanelRectangle(int playerNum)
     {
-        return new Rectangle(Player1NameRectangle.X + (360 * playerNum), 260, 82, 452);
+        return new Rectangle(Player1NameRectangle.X + (720 * playerNum), 520,194, 904);
     }
 
     // Player Name
@@ -98,7 +99,12 @@ public static class CachedAreas
         for (int i = 0; i < 12; i++)
         {
             int y = rect.Y + i * sliceHeight;
-            slices.Add(new Rectangle(rect.X, y, rect.Width, sliceHeight));
+            slices.Add(new Rectangle(
+                rect.X),
+                y),
+                rect.Width),
+                sliceHeight))
+            );
         }
         return slices;
     }

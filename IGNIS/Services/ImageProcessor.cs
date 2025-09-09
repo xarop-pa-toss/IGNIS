@@ -20,7 +20,8 @@ public static class ImageProcessor
     {
         try
         {
-            return Image.Load(imageStream);
+            var image = Image.Load(imageStream);
+            return image;
         }
         catch (InvalidImageContentException e1)
         {
@@ -43,12 +44,11 @@ public static class ImageProcessor
             int targetHeight = (int)(image.Height * (targetWidth / (float)image.Width));
             image.Mutate(x =>
             {
-                x.Resize(targetWidth, targetHeight);
+                x.Resize(targetWidth * 2,targetHeight * 2);
                 x.Grayscale();
                 x.GaussianBlur(0.5f);
                 x.BinaryThreshold(0.5f);
-                x.Contrast(1.1f);
-                x.Resize(image.Width * 2, image.Height * 2);
+                x.Contrast(1.2f);
             });
         }
         catch (ObjectDisposedException e1)

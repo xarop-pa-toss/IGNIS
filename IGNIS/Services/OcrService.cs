@@ -12,37 +12,34 @@ public static class OcrService
     private readonly static string TessDataPath = Path.Combine("Assets");
 
     
-    public static string GetStringFromImage(TesseractEngine tesseract, Image? image)
+    public static string ExtractStringFromImage(TesseractEngine tesseract, Image? image)
     {
-        var tesseractPage = PrepareImageIntoPage(tesseract, image);
-        if (tesseractPage == null)
+        var extractedText  = GetTextFromImage(tesseract, image);
+        if (extractedText == null)
         {
             return string.Empty;
         }
-        
-        return tesseractPage.GetText();
+        return extractedText;
     }
 
-    public static float GetFloatFromImage(TesseractEngine tesseract, Image? image)
+    public static float ExtractFloatFromImage(TesseractEngine tesseract, Image? image)
     {
-        var tesseractPage = PrepareImageIntoPage(tesseract, image);
-        if (tesseractPage == null)
+        var extractedText = GetTextFromImage(tesseract, image);
+        if (extractedText == null)
         {
-            return -1;
+            return -1f;
         }
         
-        var textResult = tesseractPage.GetText();
-        var onlyDigits = Regex.Replace(textResult, @"[^0-9.,]", "").Trim();
-
+        var onlyDigits = Regex.Replace(extractedText, @"[^0-9.,]", "").Trim();
         if (float.TryParse(onlyDigits, out var result))
         {
             return result;
         }
 
-        return -1;
+        return -1f;
     }
 
-    private static Page PrepareImageIntoPage(TesseractEngine tesseract, Image? image)
+    private static string GetTextFromImage(TesseractEngine tesseract, Image? image)
     {
         if (image == null)
         {
@@ -54,6 +51,8 @@ public static class OcrService
         memStream.Position = 0;
 
         using var pix = Pix.LoadFromMemory(memStream.ToArray());
-        return tesseract.Process(pix);
+        using var page = tesseract.Process(pix);
+
+        return page.GetText();
     }
 }
