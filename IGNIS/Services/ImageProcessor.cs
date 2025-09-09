@@ -3,10 +3,11 @@ using IGNIS.Models;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-namespace IGNIS;
+namespace IGNIS.Services;
 
 public static class ImageProcessor
 {
+    #region Load Image
     public static Image LoadAndPrepare(Stream imgStream, int finWidth = 1500)
     {
         var image = LoadImage(imgStream);
@@ -63,48 +64,72 @@ public static class ImageProcessor
             throw new ImageHandlerException("An unknown error occurred while resizing the image.", ex);
         }
     }
+    
+    #endregion
+    
+    public static List<PanelImages> CreatePanelsWithPlayerInfo(Image image)
+    {
+        var panelsWithPlayerInfo = new List<PanelImages>()
+        {
+            new PanelImages()
+            {
+                PlayerPosition = 1,
+                PlayerName = GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[1].PlayerName)
+            },
+            new PanelImages()
+            {
+                PlayerPosition = 2,
+                PlayerName = GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[2].PlayerName)
+            },
+            new PanelImages()
+            {
+                PlayerPosition = 3,
+                PlayerName = GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[3].PlayerName)
+            },
+            new PanelImages()
+            {
+                PlayerPosition = 4,
+                PlayerName = GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[4].PlayerName)
+            }
+        };
 
+        return panelsWithPlayerInfo;
+    }
+    
+    public static PanelImages GetStatsImagesForPlayer(Image image, int playerNum)
+    {
+        var panelRectangles = CachedAreas.AllPlayersStatsRectangles[playerNum];
+        var panelImage = new PanelImages();
+
+        try
+        {
+            panelImage.Kills              = GetImageFromRectangle(image, panelRectangles.Kills);
+            panelImage.Accuracy           = GetImageFromRectangle(image, panelRectangles.Accuracy);
+            panelImage.ShotsFired         = GetImageFromRectangle(image, panelRectangles.ShotsFired);
+            panelImage.ShotsHit           = GetImageFromRectangle(image, panelRectangles.ShotsHit);
+            panelImage.Deaths             = GetImageFromRectangle(image, panelRectangles.Deaths);
+            panelImage.StimsUsed          = GetImageFromRectangle(image, panelRectangles.StimsUsed);
+            panelImage.Accidentals        = GetImageFromRectangle(image, panelRectangles.Accidentals);
+            panelImage.SamplesExtracted   = GetImageFromRectangle(image, panelRectangles.SamplesExtracted);
+            panelImage.StratagemsUsed     = GetImageFromRectangle(image, panelRectangles.StratagemsUsed);
+            panelImage.MeleeKills         = GetImageFromRectangle(image, panelRectangles.MeleeKills);
+            panelImage.TimesReinforcing   = GetImageFromRectangle(image, panelRectangles.TimesReinforcing);
+            panelImage.FriendlyFireDamage = GetImageFromRectangle(image, panelRectangles.FriendlyFireDamage);
+        }
+        catch (ImageProcessingException e1)
+        {
+            throw new ImageHandlerException("An unknown error occurred while cropping the image.", e1);
+        }
+        
+        return panelImage;
+    }
+    
     public static Image GetImageFromRectangle(Image image, Rectangle cropRectangle)
     {
         try
         {
             return image.Clone(img => img.Crop(cropRectangle));
         }
-        catch (ImageProcessingException e1)
-        {
-            throw new ImageHandlerException("An unknown error occurred while cropping the image.", e1);
-        }
-    }
-    
-    public static Dictionary<int, Image> GetPlayerNameImagesDict(Image image)
-    {
-        return new Dictionary<int, Image>()
-        {
-            {1, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[1].PlayerName) },
-            {2, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[2].PlayerName) },
-            {3, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[3].PlayerName) },
-            {4, GetImageFromRectangle(image, CachedAreas.AllPlayersStatsRectangles[4].PlayerName) }
-        };
-    }
-    
-    public static void GetStatsImagesFromPanelImage(Image image, PanelImages panelImage, int playerNum)
-    {
-        var panelRectangles = CachedAreas.AllPlayersStatsRectangles[playerNum];
-        try
-        {
-            panelImage.Kills = GetImageFromRectangle(image, panelRectangles.Kills);
-            panelImage.Accuracy = GetImageFromRectangle(image, panelRectangles.Accuracy);
-            panelImage.ShotsFired = GetImageFromRectangle(image, panelRectangles.ShotsFired);
-            panelImage.ShotsHit = GetImageFromRectangle(image, panelRectangles.ShotsHit);
-            panelImage.Deaths = GetImageFromRectangle(image, panelRectangles.Deaths);
-            panelImage.StimsUsed = GetImageFromRectangle(image, panelRectangles.StimsUsed);
-            panelImage.Accidentals = GetImageFromRectangle(image, panelRectangles.Accidentals);
-            panelImage.SamplesExtracted = GetImageFromRectangle(image, panelRectangles.SamplesExtracted);
-            panelImage.StratagemsUsed = GetImageFromRectangle(image, panelRectangles.StratagemsUsed);
-            panelImage.MeleeKills = GetImageFromRectangle(image, panelRectangles.MeleeKills);
-            panelImage.TimesReinforcing = GetImageFromRectangle(image, panelRectangles.TimesReinforcing);
-            panelImage.FriendlyFireDamage = GetImageFromRectangle(image, panelRectangles.FriendlyFireDamage);
-         }
         catch (ImageProcessingException e1)
         {
             throw new ImageHandlerException("An unknown error occurred while cropping the image.", e1);

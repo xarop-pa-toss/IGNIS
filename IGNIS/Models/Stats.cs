@@ -2,6 +2,7 @@ namespace IGNIS.Models;
 
 public class Stats
 {
+    public int PlayerPosition { get; set; } = -1;
     public string? PlayerName { get; set; } = string.Empty;
     public int? Kills { get; set; } = -1;
     public float? Accuracy { get; set; } = -1;

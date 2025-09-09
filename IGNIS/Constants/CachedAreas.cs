@@ -4,6 +4,8 @@ namespace IGNIS.Constants;
 
 public static class CachedAreas
 {
+    //TODO: Cache rectangles for 16:10 and 16:9
+    
     // USING THE CACHED AREAS
     // List<Image> playerStatsAreas = CachedPlayerAreas.PlayerStatsRectangles
     //     .Select(r => ImageProcessor.GetImageFromRectangle(_image, r.Value))
@@ -12,7 +14,7 @@ public static class CachedAreas
     private static Rectangle Player1NameRectangle = new Rectangle(100, 160, 260, 16);
     private static Rectangle Player1StatsPanelRectangle = new Rectangle(260, 260, 82, 452);
 
-    public static Dictionary<int, PanelRectangles> AllPlayersStatsRectangles;
+    public readonly static Dictionary<int, PanelRectangles> AllPlayersStatsRectangles;
     
     static CachedAreas()
     {

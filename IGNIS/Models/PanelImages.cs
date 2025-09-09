@@ -3,6 +3,7 @@ namespace IGNIS.Models;
 
 public class PanelImages
 {
+    public int PlayerPosition { get; set; }
     public Image? PlayerName { get; set; }
     public Image? Kills { get; set; }
     public Image? Accuracy { get; set; }
