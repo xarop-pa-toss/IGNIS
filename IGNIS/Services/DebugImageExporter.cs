@@ -5,7 +5,7 @@ public static class DebugImageExporter
 {
     private static readonly string BaseDebugPath = Path.Combine(AppContext.BaseDirectory, "debug_images");
 
-    public static void SaveImage(Image image, string subFolder, string fileName)
+    public static void SaveImage(Image? image, string subFolder, string fileName)
     {
         try
         {
