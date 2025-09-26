@@ -17,20 +17,22 @@ public static class OcrService
         var extractedText  = GetTextFromImage(tesseract, image);
         if (extractedText == null)
         {
+            DebugImageExporter.SaveImage(image, $"FAILED", $"{Guid.NewGuid()}");
             return string.Empty;
-        }
+        }  
         return extractedText;
     }
 
     public static float ExtractFloatFromImage(TesseractEngine tesseract, Image? image)
     {
         var extractedText = GetTextFromImage(tesseract, image);
-        if (extractedText == null)
+        if (string.IsNullOrEmpty(extractedText))
         {
+            
             return -1f;
         }
-        
-        var onlyDigits = Regex.Replace(extractedText, @"[^0-9.,]", "").Trim();
+        var textWithReplacedOForZero = Regex.Replace(extractedText, @"[oO]", "0");
+        var onlyDigits = Regex.Replace(textWithReplacedOForZero, @"[^0-9.,]", "").Trim();
         if (float.TryParse(onlyDigits, out var result))
         {
             return result;
